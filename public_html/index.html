@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Grocery Shop</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #222;
+  }
+
+  nav {
+    background: #2e7d32;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  nav h1 { color: white; font-size: 1.4rem; }
+
+  nav button {
+    background: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .hero {
+    background: #e8f5e9;
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  .hero h2 { font-size: 2rem; margin-bottom: 0.5rem; }
+  .hero p { color: #555; margin-bottom: 1.5rem; }
+
+  .hero a {
+    background: #2e7d32;
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+
+  .categories {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    padding: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .cat {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    min-width: 120px;
+  }
+
+  .cat span { font-size: 2rem; display: block; margin-bottom: 0.4rem; }
+  .cat p { font-size: 0.85rem; color: #444; }
+
+  .products {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1rem 2rem 3rem;
+  }
+
+  .products h3 { margin-bottom: 1rem; font-size: 1.2rem; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  .card {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    overflow: hidden;
+  }
+
+  .card-img {
+    background: #f1f8e9;
+    text-align: center;
+    font-size: 4rem;
+    padding: 1.5rem 0;
+  }
+
+  .card-body { padding: 0.8rem; }
+  .card-body p { font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .card-body .price { font-weight: bold; color: #2e7d32; }
+
+  .card-body button {
+    width: 100%;
+    margin-top: 0.5rem;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+
+  .card-body button:hover { background: #1b5e20; }
+
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    background: #2e7d32;
+    color: white;
+    font-size: 0.85rem;
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 10;
+  }
+
+  .cart {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 300px;
+    background: white;
+    z-index: 11;
+    padding: 1.5rem;
+    display: none;
+    flex-direction: column;
+  }
+
+  .cart.open, .overlay.open { display: flex; }
+
+  .cart h3 { margin-bottom: 1rem; }
+
+  .cart-items { flex: 1; overflow-y: auto; }
+
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.85rem;
+  }
+
+  .cart-item button {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .cart-total {
+    padding-top: 1rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .checkout-btn {
+    width: 100%;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.95rem;
+  }
+
+  .close-cart {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    float: right;
+    margin-bottom: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <h1>🛒 Grocery Shop</h1>
+  <button onclick="openCart()">Cart (<span id="cartCount">0</span>)</button>
+</nav>
+
+<div class="hero">
+  <h2>Fresh groceries</h2>
+  <p>Grocery Shop</p>
+  <a href="#products">Shop Now</a>
+</div>
+
+<div class="categories">
+  <div class="cat"><span>🥬</span><p>Produce</p></div>
+  <div class="cat"><span>🥩</span><p>Meat</p></div>
+  <div class="cat"><span>🧀</span><p>Dairy</p></div>
+  <div class="cat"><span>🍞</span><p>Bakery</p></div>
+</div>
+
+<div class="products" id="products">
+  <h3>This week's picks</h3>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-img">🍅</div>
+      <div class="card-body">
+        <p>Tomatoes</p>
+        <p class="price">$4.50</p>
+        <button onclick="addToCart('Heirloom Tomatoes', 4.50)">Add to cart</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-img">🍞</div>
+      <div class="card-body">
+        <p>Loaf</p>
+        <p class="price">$8.00</p>
+        <button onclick="addToCart('Sourdough Loaf', 8.00)">Add to cart</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-img">🥚</div>
+      <div class="card-body">
+        <p>Eggs</p>
+        <p class="price">$6.50</p>
+        <button onclick="addToCart('Free-Range Eggs', 6.50)">Add to cart</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-img">🥬</div>
+      <div class="card-body">
+        <p>Spinach</p>
+        <p class="price">$3.20</p>
+        <button onclick="addToCart('Baby Spinach', 3.20)">Add to cart</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-img">🧀</div>
+      <div class="card-body">
+        <p>Cheddar</p>
+        <p class="price">$9.80</p>
+        <button onclick="addToCart('Aged Cheddar', 9.80)">Add to cart</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-img">🐟</div>
+      <div class="card-body">
+        <p>Salmon</p>
+        <p class="price">$14.50</p>
+        <button onclick="addToCart('Wild Salmon', 14.50)">Add to cart</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-img">🥑</div>
+      <div class="card-body">
+        <p>Avocados</p>
+        <p class="price">$5.00</p>
+        <button onclick="addToCart('Avocados', 5.00)">Add to cart</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-img">🍯</div>
+      <div class="card-body">
+        <p>Honey</p>
+        <p class="price">$12.00</p>
+        <button onclick="addToCart('Raw Honey', 12.00)">Add to cart</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>Grocery Shop</footer>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<div class="cart" id="cart">
+  <button class="close-cart" onclick="closeCart()">✕</button>
+  <h3>Your Cart</h3>
+  <div class="cart-items" id="cartItems">
+    <p style="color:#999; font-size:0.85rem;">Your cart is empty.</p>
+  </div>
+  <div class="cart-total">
+    <span>Total</span>
+    <span id="cartTotal">$0.00</span>
+  </div>
+  <button class="checkout-btn">Checkout</button>
+</div>
+
+<script>
+  let cart = [];
+
+  function addToCart(name, price) {
+    const item = cart.find(i => i.name === name);
+    if (item) {
+      item.qty++;
+    } else {
+      cart.push({ name, price, qty: 1 });
+    }
+    updateCart();
+  }
+
+  function removeItem(idx) {
+    cart.splice(idx, 1);
+    updateCart();
+  }
+
+  function updateCart() {
+  let count = 0;
+  let total = 0;
+  for (let i = 0; i < cart.length; i++) {
+    count = count + cart[i].qty;
+    total = total + cart[i].price * cart[i].qty;
+  }
+  document.getElementById('cartCount').textContent = count;
+  document.getElementById('cartTotal').textContent = '$' + total.toFixed(2);
+  const el = document.getElementById('cartItems');
+  if (cart.length === 0) {
+    el.innerHTML = '<p>Your cart is empty.</p>';
+    return;
+  }
+  let html = '';
+  for (let i = 0; i < cart.length; i++) {
+    let itemTotal = cart[i].price * cart[i].qty;
+    html = html + '<div class="cart-item">';
+    html = html + '<span>' + cart[i].name + ' x' + cart[i].qty + '</span>';
+    html = html + '<span>$' + itemTotal.toFixed(2) + '</span>';
+    html = html + '<button onclick="removeItem(' + i + ')">✕</button>';
+    html = html + '</div>';
+  }
+  el.innerHTML = html;
+}
+
+  function openCart() {
+    document.getElementById('cart').classList.add('open');
+    document.getElementById('overlay').classList.add('open');
+  }
+
+  function closeCart() {
+    document.getElementById('cart').classList.remove('open');
+    document.getElementById('overlay').classList.remove('open');
+  }
+</script>
+</body>
+</html>
