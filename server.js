@@ -1,4 +1,5 @@
 var express = require("express")
+var session = require("express-session") 
 var app = express()
 var fs = require("fs")
 var crypto = require("crypto")
@@ -8,6 +9,12 @@ var public_html = path.join(__dirname, "public_html")
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+
+app.use(session({
+    secret: "shop",
+    resave: false,
+    saveUninitialized: false
+}))
 
 /**
  * Load users from users.json. 
@@ -97,6 +104,11 @@ app.get("/login", function(req, res){
 })
 
 app.get("/store", function(req, res){
+    // if user not logged in, redirect to login page
+    if (!req.session.user) {
+        return res.redirect("/login")
+    }
+    // otherwise, redirect to home page 
     res.sendFile(path.join(public_html, "index.html"))
 })
 
@@ -152,6 +164,15 @@ app.post("/login", function(req, res){
     var password = req.body.password
 
     if (checkLogin(username, password)) {
+        // attempt to find user 
+        var user = findUser(username)
+
+        // save user login information in current session 
+        req.session.user = {
+            "username": user.username,
+            "usertype": user.usertype
+        }
+
         // if user is admin
         if (checkAdmin(username)) {
             // send them to admin home 
@@ -166,10 +187,152 @@ app.post("/login", function(req, res){
 })
 
 /**
+ * Logs out users. 
+ */
+app.get("/logout", function(req, res){
+    // clear user session 
+    req.session.destroy(function(){
+        res.redirect("/login")
+    })
+})
+
+/**
+ * Retrieves user's carts. 
+ */
+app.get("/cart", function(req, res){
+    // ensure user is logged in 
+    if(!req.session.user){
+        return res.status(401).json({"error": "Error: User not logged in."})
+    }
+    // find username in session 
+    var user = findUser(req.session.user.username)
+
+    // if user not found, error 
+    if (!user){
+        return res.status(404).json({"error": "Error: User not Found."})
+    }
+    // ensure user has a cart 
+    if(!user.cart){
+        user.cart = []
+        saveUsers()
+    }
+    res.json(user.cart)
+})
+
+/**
+ * Handles adding products to user's cart. 
+ */
+app.post("/cart/add", function(req, res){
+    // ensure user is logged in 
+    if (!req.session.user) {
+        return res.status(401).json({"error": "Error: User not logged in."})
+    }
+    // find username in session 
+    var user = findUser(req.session.user.username)
+
+    // if user not found, error 
+    if (!user) {
+        return res.status(404).json({"error": "Error: User not Found."})
+    }
+    // ensure user has a cart 
+    if (!user.cart) {
+        user.cart = []
+    }
+
+    // retrieve product information
+    var productName = req.body.name
+    var productPrice = Number(req.body.price)
+
+    var found = false
+
+    // iterate over user's products 
+    for (var i = 0; i < user.cart.length; i++) {
+        // if product exists, increment quantity 
+        if (user.cart[i].name == productName) {
+            user.cart[i].qty = user.cart[i].qty + 1
+            found = true
+        }
+    }
+
+    // if product not found, add to user cart 
+    if (!found) {
+        user.cart.push({
+            "name": productName,
+            "price": productPrice,
+            "qty": 1
+        })
+    }
+    saveUsers()
+    res.json(user.cart)
+})
+
+/**
+ * Handles removing products from user's cart. 
+ */
+app.post("/cart/remove", function(req, res){
+    // ensure user is logged in 
+    if (!req.session.user) {
+        return res.status(401).json({"error": "Error: User not logged in."})
+    }
+    // find username in session 
+    var user = findUser(req.session.user.username)
+
+    // if user not found, error 
+    if (!user) {
+        return res.status(404).json({"error": "Error: User not Found."})
+    }
+
+    // ensure user has a cart 
+    if (!user.cart) {
+        user.cart = []
+    }
+
+    var productName = req.body.name
+
+    // iterate over all products
+    for (var i = 0; i < user.cart.length; i++) {
+        // if product found, remove 
+        if (user.cart[i].name == productName) { 
+            user.cart.splice(i, 1)
+            break
+        }
+    }
+
+    saveUsers()
+
+    res.json(user.cart)
+})
+
+/**
+ * Handles clearing all products from user's cart. 
+ */
+app.post("/cart/clear", function(req, res){
+    // ensure user is logged in 
+    if (!req.session.user) {
+        return res.status(401).json({"error": "Error: User not logged in."})
+    }
+    // find username in session 
+    var user = findUser(req.session.user.username)
+
+    // if user not found, error 
+    if (!user) {
+        return res.status(404).json({"error": "Error: User not Found."})
+    }
+    // clear user cart 
+    user.cart = []
+
+    saveUsers()
+
+    res.json(user.cart)
+})
+
+
+/**
  * Displays page to manage products as admin. 
  */
 app.post("/manage", function(req, res){
-    if(checkAdmin(req.body.username)){
+    // ensure session is also available 
+    if (req.session.user && checkAdmin(req.session.user.username)) {
         res.sendFile(path.join(public_html, "manage.html"))
     } else {
         res.status(403).send("Error: Admin only")

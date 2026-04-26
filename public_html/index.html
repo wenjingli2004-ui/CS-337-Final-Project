@@ -307,27 +307,45 @@
     <span>Total</span>
     <span id="cartTotal">$0.00</span>
   </div>
-  <button class="checkout-btn">Checkout</button>
+  <button class="checkout-btn" onclick="clearCart()">Checkout</button>
 </div>
 
 <script>
   let cart = [];
 
-  function addToCart(name, price) {
-    const item = cart.find(i => i.name === name);
-    if (item) {
-      item.qty++;
+  // loads user cart from server 
+  async function loadCart() {
+    var response = await fetch("/cart");
+
+    if (response.ok) {
+      cart = await response.json();
     } else {
-      cart.push({ name, price, qty: 1 });
+      cart = [];
     }
     updateCart();
   }
 
-  function removeItem(idx) {
-    cart.splice(idx, 1);
-    updateCart();
+  // add product to user cart 
+  async function addToCart(name, price) {
+    // send product information to update users.json 
+    var response = await fetch("/cart/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        "name": name,
+        "price": price
+      })
+    });
+
+    if (response.ok) {
+      cart = await response.json();
+      updateCart();
+    } else {
+      alert("Error: Log in before adding products to cart.");
+    }
   }
 
+  // update cart being displayed 
   function updateCart() {
   let count = 0;
   let total = 0;
@@ -354,15 +372,49 @@
   el.innerHTML = html;
 }
 
+  // remove product from cart 
+  async function removeItem(index) {
+    var productName = cart[index].name;
+
+    // send product information to remove from users.json 
+    var response = await fetch("/cart/remove", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        "name": productName
+      })
+    });
+
+    if (response.ok) {
+      cart = await response.json();
+      updateCart();
+    }
+  }
+
+  // clear user's cart 
+  async function clearCart() {
+    var response = await fetch("/cart/clear", {
+      method: "POST"
+    });
+
+    if (response.ok) {
+      cart = await response.json();
+      updateCart();
+    }
+  }
+
   function openCart() {
     document.getElementById('cart').classList.add('open');
     document.getElementById('overlay').classList.add('open');
+    loadCart()
   }
 
   function closeCart() {
     document.getElementById('cart').classList.remove('open');
     document.getElementById('overlay').classList.remove('open');
   }
+
+  loadCart()
 </script>
 </body>
 </html>
