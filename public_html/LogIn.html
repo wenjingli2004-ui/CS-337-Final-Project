@@ -28,7 +28,6 @@
       border: 1px solid black;
       margin-bottom: 20px;
       text-align: 10%;
-      /* size: 50px; */
     }
     span{
         display: block;
@@ -48,22 +47,24 @@
   </script>
 </head>
 <body>
-    <!-- <div id="contain"> -->
-        <form border="1px solid black" id="signUp">
-            <h1>Log In</h1>
-            <span>Enter Username</span>
-            <input type="text" name="username" id="" placeholder="Enter Username">
-            <br>
-            <span>Enter Password</span>
-            <input type="text" name="" id="password" placeholder="Enter Password"><br>
-            <label>Select User Type:</label>
-            <select name="users" id="users">
-              <option value="shopper">Shopper</option>
-              <option value="Admin">Admin</option>
-            </select>
-            <br><br>
-            <input type="submit" name="submit" id="submit">
-        </form>
-    <!-- </div> -->
+    <form border="1px solid black" id="signUp" action="/login" method="post">
+        <h1>Log In</h1>
+
+        <span>Enter Username</span>
+        <input type="text" name="username" placeholder="Enter Username">
+
+        <br>
+
+        <span>Enter Password</span>
+        <input type="password" name="password" id="password" placeholder="Enter Password">
+
+        <br>
+
+        <input type="submit" name="submit" id="submit" value="Log In">
+
+        <br><br>
+
+        <a href="/create_user">Create Account</a>
+    </form>
 </body>
 </html>
