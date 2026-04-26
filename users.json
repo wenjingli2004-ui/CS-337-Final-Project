@@ -1,1 +1,37 @@
-[]
+[
+  {
+    "userId": "3d99391f-d3d8-473b-84c6-5e78945c7ee8",
+    "username": "Fabian1",
+    "password": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+    "usertype": "shopper",
+    "cart": [
+      {
+        "name": "Baby Spinach",
+        "price": 3.2,
+        "qty": 2
+      },
+      {
+        "name": "Aged Cheddar",
+        "price": 9.8,
+        "qty": 1
+      },
+      {
+        "name": "Wild Salmon",
+        "price": 14.5,
+        "qty": 1
+      },
+      {
+        "name": "Heirloom Tomatoes",
+        "price": 4.5,
+        "qty": 2
+      }
+    ]
+  },
+  {
+    "userId": "e594e9d3-0ac6-4e96-adc8-faec154bdc21",
+    "username": "admin",
+    "password": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+    "usertype": "admin",
+    "cart": []
+  }
+]
