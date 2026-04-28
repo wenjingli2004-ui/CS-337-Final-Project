@@ -129,6 +129,11 @@ app.post("/signup", function(req, res){
         return res.status(400).send("Error: Username, password, or user type are empty.")
     }
 
+    // ensure password length at least 8 chars 
+    if (password.length < 8) {
+        return res.status(400).send("Error: Password must be at least 8 characters long.")
+    }
+
     // ensure username does not already exist
     if (findUser(username)){
         return res.status(400).send("Error: Username already exists.")
@@ -162,10 +167,16 @@ app.post("/signup", function(req, res){
 app.post("/login", function(req, res){
     var username = req.body.username
     var password = req.body.password
+    var userType = req.body.usertype
 
     if (checkLogin(username, password)) {
         // attempt to find user 
         var user = findUser(username)
+
+        // if selected type does not match user's type, error
+        if (user.usertype !== userType) {
+            return res.status(403).send("Error: Wrong user type.")
+        }
 
         // save user login information in current session 
         req.session.user = {
@@ -174,7 +185,7 @@ app.post("/login", function(req, res){
         }
 
         // if user is admin
-        if (checkAdmin(username)) {
+        if (user.usertype == "admin") {
             // send them to admin home 
             res.sendFile(path.join(public_html, "home_admin.html"))
         // otherwise, send them to regular store 
