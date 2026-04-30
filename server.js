@@ -5,7 +5,7 @@ var fs = require("fs")
 var crypto = require("crypto")
 var path = require("path")
 
-var public_html = path.join(__dirname, "public_html")
+var public_html = __dirname
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
