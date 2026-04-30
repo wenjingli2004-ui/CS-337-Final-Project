@@ -5,7 +5,7 @@ var fs = require("fs")
 var crypto = require("crypto")
 var path = require("path")
 
-var public_html = path.join(__dirname, "public_html")
+var public_html = __dirname
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
@@ -50,6 +50,9 @@ function loadProducts(){
         return []
     }
 }
+function saveProducts(products){
+    fs.writeFileSync("products.json", JSON.stringify(products, null, 2), {"encoding": "utf-8"})
+}
 function getProducts(){
     var products = loadProducts();
     var prodStr = "";
@@ -74,6 +77,7 @@ function getProducts(){
     }
     return prodStr
 }
+
 /**
  * Finds user object through username. 
  * 
@@ -156,6 +160,13 @@ app.get("/create_user", function(req, res){
 /**
  * Creates the admin interface 
  */
+app.get("/admin", function(req, res){
+    if (!req.session.user){
+        console.log("hmm")
+    //     return res.redirect("/login")
+    }
+    res.sendFile(path.join(public_html, "admin.html"))
+})
 /**
  * Creates account for new user. 
  */
@@ -223,11 +234,14 @@ app.post("/login", function(req, res){
             "username": user.username,
             "usertype": user.usertype
         }
-
         // if user is admin
         if (user.usertype == "admin") {
-            // send them to admin home 
-            res.sendFile(path.join(public_html, "home_admin.html"))
+            // send them to admin home
+            res.sendFile(path.join(public_html, "admin.html"))
+
+            console.log("hello")
+            res.redirect("/admin")
+            // res.sendFile(path.join(public_html, "admin.html"))
         // otherwise, send them to regular store 
         } else {
             res.redirect("/store")
@@ -388,6 +402,52 @@ app.post("/manage", function(req, res){
     } else {
         res.status(403).send("Error: Admin only")
     }
+})
+
+app.get("/products", function(req, res){
+    var products = loadProducts()
+    var result = products.map(function(p){
+        return { id: p.productID, name: p.productName, emoji: p.emoji, price: p.price }
+    })
+    res.json(result)
+})
+
+app.post("/products/add", function(req, res){
+    var name = req.body.name
+    var price = req.body.price
+    var emoji = req.body.emoji
+    if (!name || !price || !emoji) {
+        return res.status(400).json({ error: "Missing fields." })
+    }
+    var products = loadProducts()
+    id = crypto.randomUUID
+    products.push({ productID: crypto.randomUUID(), productName: name, emoji: emoji, price: price })
+    saveProducts(products)
+    var product = {
+        "productID": id,
+        "productName": name,
+        "emoji": emoji,
+        "price": price
+    }
+    products.push(product)
+    saveProducts()
+    console.log("Product Saved")
+    var result = products.map(function(p){
+        return { id: p.productID, name: p.productName, emoji: p.emoji, price: p.price }
+    })
+
+    res.json(result)
+})
+
+app.post("/products/delete", function(req, res){
+    var name = req.body.name
+    var products = loadProducts()
+    products = products.filter(function(p){ return p.productName !== name })
+    saveProducts(products)
+    var result = products.map(function(p){
+        return { id: p.productID, name: p.productName, emoji: p.emoji, price: p.price }
+    })
+    res.json(result)
 })
 
 app.listen(8080, function(){

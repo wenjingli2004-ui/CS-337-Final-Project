@@ -66,5 +66,12 @@
         "qty": 1
       }
     ]
+  },
+  {
+    "userId": "99b1472b-c819-4d81-b7f6-38bbaf631936",
+    "username": "dam",
+    "password": "ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f",
+    "usertype": "admin",
+    "cart": []
   }
 ]

@@ -62,17 +62,23 @@
       border-radius: 8px;
       border: 1px solid #ddd;
     }
+    th{
+      background-color: #1b5e20;
+      color: white;
+    }
     thead { 
-        background: #2e7d32; 
-        color: white; 
+        background: #e5eae5; 
+        color: black; 
     }
     th, td { 
         padding: 0.7rem 1rem; 
         text-align: left; 
         font-size: 0.9rem; 
     }
-    tbody tr { 
+    tbody tr {
         border-bottom: 1px solid #eee;
+        background: white;
+        color: black;
     }
     .delete-btn {
       background: #c62828;
@@ -103,13 +109,16 @@
       <input type="text" id="newName" placeholder="Product name">
       <input type="number" id="newPrice" placeholder="Price" step="0.01">
       <input type="text" id="newEmoji" placeholder="Emoji (e.g. 🍎)">
-      <button onclick="addProduct()">Add</button>
-    </div>
+      <button type="button" onclick="addProduct()">Add</button>
+    </form>
 
     <h2>All Products</h2>
     <table>
       <thead>
         <tr><th>Emoji</th><th>Name</th><th>Price</th><th>Delete</th></tr>
+        <!-- PRODUCTS2 -->
+
+
       </thead>
       <tbody id="productTable">
       </tbody>
@@ -182,7 +191,7 @@
       renderProducts()
     })
   }
- 
+
   loadProducts()
 </script>
  
