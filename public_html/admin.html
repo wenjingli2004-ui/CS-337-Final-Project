@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
   <title>Admin Dashboard</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -97,7 +98,7 @@
 
 <div class="container">
   <div class="section active" id="tab-products">
-    <div class="add-form">
+    <form class="add-form" method="post">
       <h3>Add New Product</h3>
       <input type="text" id="newName" placeholder="Product name">
       <input type="number" id="newPrice" placeholder="Price" step="0.01">

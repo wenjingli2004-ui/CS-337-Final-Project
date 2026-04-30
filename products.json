@@ -1,1 +1,74 @@
-[]
+[
+    {
+        "productID": "68e09f24-6b63-4102-b94c-82e89cf783a2",
+        "productName": "Tomatoes",
+        "emoji": "🍅",
+        "price": "4.50"
+    },
+    {
+        "productID": "2930f989-0c88-45c4-aa2b-e2f7080688b4",
+        "productName": "Loaf",
+        "emoji": "🍞",
+        "price": "8.00"
+    },
+    {
+        "productID": "7cbda9fc-4d0c-41b6-8893-e7fade8f5fd5",
+        "productName": "Eggs",
+        "emoji": "🥚",
+        "price": "6.50"
+    },
+    {
+        "productID": "35ca0a66-a7e4-4721-8ce7-093958825820",
+        "productName": "Spinach",
+        "emoji": "🥬",
+        "price": "3.20"
+    },
+    {
+        "productID": "2a2c180e-7119-4f50-8980-4a384d363c3f",
+        "productName": "Cheddar",
+        "emoji": "🧀",
+        "price": "9.80"
+    },
+    {
+        "productID": "a0828cbe-0cd6-496d-9641-ab4d8a5aed18",
+        "productName": "Salmon",
+        "emoji": "🐟",
+        "price": "14.50"
+    },
+    {
+        "productID": "2515bab9-9fb0-4566-b9d4-5107000b44a5",
+        "productName": "Avocados",
+        "emoji": "🥑",
+        "price": "5.00"
+    },
+    {
+        "productID": "433586a6-96d8-4d4c-8cf9-c26bb060d006",
+        "productName": "Honey",
+        "emoji": "🍯",
+        "price": "12.00"
+    },
+    {
+        "productID": "2515bab9-9fb0-4566-b9d4-5107000b44a5",
+        "productName": "Avocados",
+        "emoji": "🥑",
+        "price": "5.00"
+    },
+    {
+        "productID": "433586a6-96d8-4d4c-8cf9-c26bb060d006",
+        "productName": "Honey",
+        "emoji": "🍯",
+        "price": "12.00"
+    },
+    {
+        "productID": "433586a6-96d8-4d4c-8cf9-c26bb060d006",
+        "productName": "Honey",
+        "emoji": "🍯",
+        "price": "12.00"
+    },
+    {
+        "productID": "433586a6-96d8-4d4c-8cf9-c26bb060d006",
+        "productName": "Honey",
+        "emoji": "🍯",
+        "price": "12.00"
+    }
+]

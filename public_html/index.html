@@ -214,83 +214,10 @@
   <div class="cat"><span>🧀</span><p>Dairy</p></div>
   <div class="cat"><span>🍞</span><p>Bakery</p></div>
 </div>
-
 <div class="products" id="products">
   <h3>This week's picks</h3>
   <div class="grid">
-
-    <div class="card">
-      <div class="card-img">🍅</div>
-      <div class="card-body">
-        <p>Tomatoes</p>
-        <p class="price">$4.50</p>
-        <button onclick="addToCart('Heirloom Tomatoes', 4.50)">Add to cart</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-img">🍞</div>
-      <div class="card-body">
-        <p>Loaf</p>
-        <p class="price">$8.00</p>
-        <button onclick="addToCart('Sourdough Loaf', 8.00)">Add to cart</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-img">🥚</div>
-      <div class="card-body">
-        <p>Eggs</p>
-        <p class="price">$6.50</p>
-        <button onclick="addToCart('Free-Range Eggs', 6.50)">Add to cart</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-img">🥬</div>
-      <div class="card-body">
-        <p>Spinach</p>
-        <p class="price">$3.20</p>
-        <button onclick="addToCart('Baby Spinach', 3.20)">Add to cart</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-img">🧀</div>
-      <div class="card-body">
-        <p>Cheddar</p>
-        <p class="price">$9.80</p>
-        <button onclick="addToCart('Aged Cheddar', 9.80)">Add to cart</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-img">🐟</div>
-      <div class="card-body">
-        <p>Salmon</p>
-        <p class="price">$14.50</p>
-        <button onclick="addToCart('Wild Salmon', 14.50)">Add to cart</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-img">🥑</div>
-      <div class="card-body">
-        <p>Avocados</p>
-        <p class="price">$5.00</p>
-        <button onclick="addToCart('Avocados', 5.00)">Add to cart</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-img">🍯</div>
-      <div class="card-body">
-        <p>Honey</p>
-        <p class="price">$12.00</p>
-        <button onclick="addToCart('Raw Honey', 12.00)">Add to cart</button>
-      </div>
-    </div>
-
+    <!--PRODUCTS-->
   </div>
 </div>
 
@@ -326,12 +253,13 @@
   }
 
   // add product to user cart 
-  async function addToCart(name, price) {
-    // send product information to update users.json 
+  async function addToCart(id, name, price) {
+    // send product information to update users.json
     var response = await fetch("/cart/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        "id": id,
         "name": name,
         "price": price
       })

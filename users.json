@@ -53,5 +53,18 @@
     "password": "4c3109d3fbb942990e695ff5298f0b6e3d496612df7b837cc544533339c0dd08",
     "usertype": "admin",
     "cart": []
+  },
+  {
+    "userId": "7ad96fff-6ccf-460f-a141-aeecd9504b47",
+    "username": "ram",
+    "password": "ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f",
+    "usertype": "shopper",
+    "cart": [
+      {
+        "name": "Loaf",
+        "price": 8,
+        "qty": 1
+      }
+    ]
   }
 ]

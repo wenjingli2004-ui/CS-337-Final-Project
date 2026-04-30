@@ -38,7 +38,42 @@ var userList = loadUsers()
 function saveUsers(){
     fs.writeFileSync("users.json", JSON.stringify(userList, null, 2), {"encoding":"utf-8"})
 }
+/**
+ * Gets the products
+ */
+function loadProducts(){
+    try{
+        var content = fs.readFileSync("products.json", {"encoding":"utf-8"})
+        return JSON.parse(content)
+    }catch(err){
+        console.log(err)
+        return []
+    }
+}
+function getProducts(){
+    var products = loadProducts();
+    var prodStr = "";
+    for (var i = 0; i<products.length; i++){
+        var prod = products[i]
+        var id = prod.productID
+        var productName = prod.productName
+        var emoji = prod.emoji
+        var price = prod.price
 
+        var p = `
+            <div class="card" data-id="${id}">
+                <div class="card-img">${emoji}</div>
+                <div class="card-body">
+                    <p>${productName}</p>
+                    <p class="price">${price}</p>
+                    <button onclick="addToCart('${id}', '${productName}', ${price})">Add to cart</button>
+                </div>
+            </div>
+        `
+        prodStr += p
+    }
+    return prodStr
+}
 /**
  * Finds user object through username. 
  * 
@@ -96,6 +131,8 @@ function checkAdmin(username) {
 }
 
 app.get("/", function(req, res){
+    var productStr = getProducts();
+    
     res.sendFile(path.join(public_html, "login.html"))
 })
 
@@ -108,14 +145,17 @@ app.get("/store", function(req, res){
     if (!req.session.user) {
         return res.redirect("/login")
     }
-    // otherwise, redirect to home page 
-    res.sendFile(path.join(public_html, "index.html"))
+    var html = fs.readFileSync(path.join(public_html, "index.html"), {"encoding": "utf-8"})
+    html = html.replace("<!--PRODUCTS-->", getProducts())
+    res.send(html)
 })
 
 app.get("/create_user", function(req, res){
     res.sendFile(path.join(public_html, "userSignUp.html"))
 })
-
+/**
+ * Creates the admin interface 
+ */
 /**
  * Creates account for new user. 
  */
