@@ -33,5 +33,25 @@
     "password": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
     "usertype": "admin",
     "cart": []
+  },
+  {
+    "userId": "59216b80-6c06-4858-8aaa-8c40ab8e0479",
+    "username": "sam",
+    "password": "85cf7125004826a368c24d7ad848bcba86a7d9b9edba003873b7f31961edd485",
+    "usertype": "shopper",
+    "cart": [
+      {
+        "name": "Sourdough Loaf",
+        "price": 8,
+        "qty": 2
+      }
+    ]
+  },
+  {
+    "userId": "d30eb816-2fca-4204-a5e1-ca5bf440543c",
+    "username": "adas",
+    "password": "4c3109d3fbb942990e695ff5298f0b6e3d496612df7b837cc544533339c0dd08",
+    "usertype": "admin",
+    "cart": []
   }
 ]
