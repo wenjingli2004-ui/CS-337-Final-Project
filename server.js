@@ -157,6 +157,7 @@ app.get("/store", function(req, res){
 app.get("/create_user", function(req, res){
     res.sendFile(path.join(public_html, "userSignUp.html"))
 })
+
 /**
  * Creates the admin interface 
  */
@@ -237,9 +238,6 @@ app.post("/login", function(req, res){
         // if user is admin
         if (user.usertype == "admin") {
             // send them to admin home
-            res.sendFile(path.join(public_html, "admin.html"))
-
-            console.log("hello")
             res.redirect("/admin")
             // res.sendFile(path.join(public_html, "admin.html"))
         // otherwise, send them to regular store 
@@ -420,17 +418,11 @@ app.post("/products/add", function(req, res){
         return res.status(400).json({ error: "Missing fields." })
     }
     var products = loadProducts()
-    id = crypto.randomUUID
+    
     products.push({ productID: crypto.randomUUID(), productName: name, emoji: emoji, price: price })
+
     saveProducts(products)
-    var product = {
-        "productID": id,
-        "productName": name,
-        "emoji": emoji,
-        "price": price
-    }
-    products.push(product)
-    saveProducts()
+
     console.log("Product Saved")
     var result = products.map(function(p){
         return { id: p.productID, name: p.productName, emoji: p.emoji, price: p.price }

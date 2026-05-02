@@ -12,6 +12,7 @@
         align-items: center;    
         margin: 0;
         background-color: rgb(211, 235, 211);
+        min-height: 100vh;
     }
     #signUp{
       width: 500px;
@@ -19,9 +20,8 @@
       text-align: center;
       border: 2px solid rgb(170, 196, 170);
       border-radius: 6px;
-      margin-top: 20%;
-      height:600px;
       background-color: white;
+      padding: 30px 0; 
     }
     input{
       width: 70%;
@@ -30,7 +30,6 @@
       border: 1px solid black;
       margin-bottom: 20px;
       text-align: 10%;
-      /* size: 50px; */
     }
     h1{
       margin-top: 80px;
@@ -56,7 +55,6 @@
   </script>
 </head>
 <body>
-    <!-- <div id="contain"> -->
   <form border="1px solid black" id="signUp" action="/signup" method="post">
       <h1>Sign Up</h1>
 
@@ -86,9 +84,5 @@
 
       <input type="submit" name="submit" id="submit">
   </form>
-    <!-- </div> -->
 </body>
 </html>
-<!-- users.json
-products.json
-carts.json -->
